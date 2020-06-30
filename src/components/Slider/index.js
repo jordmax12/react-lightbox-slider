@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Modal from '@npmpackageschicago/react-barebones-modal'
 import './index.css'
 
 const Slider = ({
@@ -63,7 +64,8 @@ const Slider = ({
   }
   return (
     <div className="slider">
-
+      <Modal
+        show={true} />
       <div className="slider-wrapper"
         style={{
           transform: `translateX(${translateValue}px)`,

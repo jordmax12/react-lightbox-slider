@@ -10,6 +10,7 @@
     "eject": "react-scripts eject"
   },
   "dependencies": {
+    "@npmpackageschicago/react-barebones-modal": "^1.0.5",
     "react": "^16.13.1",
     "react-dom": "^16.4.0",
     "react-router-dom": "^5.1.2",
