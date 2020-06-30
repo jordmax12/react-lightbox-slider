@@ -15,29 +15,16 @@ const Slider = ({
   const goToPrevSlide = () => {
     if (currentIndex === 0) {
       setCurrentIndex(images.length - 1);
-      console.log(slideWidth() * images.length)
       setTranslateValue(-(slideWidth() * (images.length - 1)));
       return;
     }
 
-    // this.setState(prevState => ({
-    //   currentIndex: prevState.currentIndex - 1,
-    //   translateValue: prevState.translateValue + this.slideWidth()
-    // }))
     setCurrentIndex(currentIndex - 1);
     setTranslateValue(translateValue - 1 + slideWidth());
   }
 
   const goToNextSlide = () => {
-    // Exiting the method early if we are at the end of the images array.
-    // We also want to reset currentIndex and translateValue, so we return
-    // to the first image in the array.
     if (currentIndex === images.length - 1) {
-      // return this.setState({
-      //   currentIndex: 0,
-      //   translateValue: 0
-      // })
-      console.log(translateValue);
       setCurrentIndex(0);
       setTranslateValue(0);
       return;
@@ -74,7 +61,6 @@ const Slider = ({
       </div >
     );
   }
-  console.log('logging images', images)
   return (
     <div className="slider">
 
