@@ -1,8 +1,11 @@
 {
-  "name": "react-slider-lightbox",
-  "version": "1.0.1",
+  "name": "@npmpackageschicago/react-slider-lightbox",
+  "version": "1.0.3",
   "scripts": {
     "build": "./node_modules/.bin/babel src --out-file index.js"
+  },
+  "dependencies": {
+    "@npmpackageschicago/react-barebones-modal": "^1.0.5"
   },
   "devDependencies": {
     "@babel/cli": "^7.0.0",
@@ -16,8 +19,7 @@
   },
   "peerDependencies": {
     "prop-types": "^15.7.2",
-    "react": "^16.12.0",
-    "@npmpackageschicago/react-barebones-modal": "^1.0.5"
+    "react": "^16.12.0"
   },
   "author": "Jordan",
   "license": "MIT",
