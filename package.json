@@ -1,5 +1,5 @@
 {
-  "name": "@npmpackageschicago/react-slider-lightbox",
+  "name": "react-lightbox-slider",
   "version": "1.0.5",
   "scripts": {
     "build": "./node_modules/.bin/babel src --out-file index.js"
@@ -25,7 +25,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git@github.com:jordmax12/react-slider-lightbox.git"
+    "url": "git@github.com:jordmax12/react-lightbox-slider.git"
   },
   "browserslist": {
     "production": [
