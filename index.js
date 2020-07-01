@@ -9,7 +9,7 @@ exports.default = void 0;
 
 var _react = _interopRequireWildcard(require("react"));
 
-var _reactBarebonesModal = _interopRequireDefault(require("@npmpackageschicago/react-barebones-modal"));
+var _reactBarebonesModal = _interopRequireDefault(require("react-barebones-modal"));
 
 require("./src/index.css");
 

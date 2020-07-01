@@ -1,11 +1,11 @@
 {
   "name": "@npmpackageschicago/react-slider-lightbox",
-  "version": "1.0.3",
+  "version": "1.0.5",
   "scripts": {
     "build": "./node_modules/.bin/babel src --out-file index.js"
   },
   "dependencies": {
-    "@npmpackageschicago/react-barebones-modal": "^1.0.5"
+    "react-barebones-modal": "^1.0.8"
   },
   "devDependencies": {
     "@babel/cli": "^7.0.0",

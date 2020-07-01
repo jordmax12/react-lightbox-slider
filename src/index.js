@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Modal from '@npmpackageschicago/react-barebones-modal'
+import Modal from 'react-barebones-modal'
 import './src/index.css'
 
 const Slider = ({
