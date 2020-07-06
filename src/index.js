@@ -8,6 +8,10 @@ const Slider = ({
   const [images, setImages] = useState(_images || []);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [translateValue, setTranslateValue] = useState(0);
+  const [showModal, setShowModal] = useState(false);
+
+  if (showModal) document.body.style.overflow = "hidden";
+  else document.body.style.overflow = "auto";
 
   const slideWidth = () => {
     return document.querySelector('.slide').clientWidth
@@ -35,14 +39,24 @@ const Slider = ({
     setTranslateValue(translateValue + -(slideWidth()))
   }
 
-  const Slide = ({ image }) => {
+  const Slide = ({ image, onClickHandler }) => {
     const styles = {
       backgroundImage: `url(${image})`,
-      backgroundSize: 'cover',
+      backgroundSize: 'contain',
       backgroundRepeat: 'no-repeat',
-      backgroundPosition: '50% 60%'
+      backgroundPosition: '50% 60%',
+      height: 'auto',
+      // position: 'absolute',
+      width: '100%'
     }
-    return <div className="slide" style={styles}></div>
+    return <div className="slide" style={{ width: '100%', position: 'relative' }}>
+      <div onClick={onClickHandler ? onClickHandler : null} style={styles}>
+        <img src={image} style={{ visibility: 'hidden' }} />
+      </div>
+    </div>
+    // return <div style={styles}><img onClick={onClickHandler ? onClickHandler : null} src={image} /></div>
+    // return <></>
+    // return <div className="slide" onClick={onClickHandler ? onClickHandler : null} style={styles} />
   }
 
 
@@ -65,7 +79,20 @@ const Slider = ({
   return (
     <div className="slider">
       <Modal
-        show={true} />
+        customClassName={`w80% mawa bgc-t t50 posa ofh`}
+        show={showModal}>
+        <div className="slider-wrapper"
+          style={{
+            transform: `translateX(${translateValue}px)`,
+            transition: 'transform ease-out 0.45s'
+          }}>
+          {
+            images.map((image, i) => (
+              <Slide key={`modal-${i}`} image={image} />
+            ))
+          }
+        </div>
+      </Modal>
       <div className="slider-wrapper"
         style={{
           transform: `translateX(${translateValue}px)`,
@@ -73,7 +100,7 @@ const Slider = ({
         }}>
         {
           images.map((image, i) => (
-            <Slide key={i} image={image} />
+            <Slide onClickHandler={() => setShowModal(true)} key={i} image={image} />
           ))
         }
       </div>

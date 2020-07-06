@@ -49,6 +49,13 @@ var Slider = function Slider(_ref) {
       translateValue = _useState6[0],
       setTranslateValue = _useState6[1];
 
+  var _useState7 = (0, _react.useState)(false),
+      _useState8 = _slicedToArray(_useState7, 2),
+      showModal = _useState8[0],
+      setShowModal = _useState8[1];
+
+  if (showModal) document.body.style.overflow = "hidden";else document.body.style.overflow = "auto";
+
   var slideWidth = function slideWidth() {
     return document.querySelector('.slide').clientWidth;
   };
@@ -76,17 +83,34 @@ var Slider = function Slider(_ref) {
   };
 
   var Slide = function Slide(_ref2) {
-    var image = _ref2.image;
+    var image = _ref2.image,
+        onClickHandler = _ref2.onClickHandler;
     var styles = {
       backgroundImage: "url(".concat(image, ")"),
-      backgroundSize: 'cover',
+      backgroundSize: 'contain',
       backgroundRepeat: 'no-repeat',
-      backgroundPosition: '50% 60%'
+      backgroundPosition: '50% 60%',
+      height: 'auto',
+      // position: 'absolute',
+      width: '100%'
     };
     return /*#__PURE__*/_react.default.createElement("div", {
       className: "slide",
+      style: {
+        width: '100%',
+        position: 'relative'
+      }
+    }, /*#__PURE__*/_react.default.createElement("div", {
+      onClick: onClickHandler ? onClickHandler : null,
       style: styles
-    });
+    }, /*#__PURE__*/_react.default.createElement("img", {
+      src: image,
+      style: {
+        visibility: 'hidden'
+      }
+    }))); // return <div style={styles}><img onClick={onClickHandler ? onClickHandler : null} src={image} /></div>
+    // return <></>
+    // return <div className="slide" onClick={onClickHandler ? onClickHandler : null} style={styles} />
   };
 
   var LeftArrow = function LeftArrow(props) {
@@ -112,8 +136,9 @@ var Slider = function Slider(_ref) {
   return /*#__PURE__*/_react.default.createElement("div", {
     className: "slider"
   }, /*#__PURE__*/_react.default.createElement(_reactBarebonesModal.default, {
-    show: true
-  }), /*#__PURE__*/_react.default.createElement("div", {
+    customClassName: "w80% mawa bgc-t t50 posa ofh",
+    show: showModal
+  }, /*#__PURE__*/_react.default.createElement("div", {
     className: "slider-wrapper",
     style: {
       transform: "translateX(".concat(translateValue, "px)"),
@@ -121,6 +146,20 @@ var Slider = function Slider(_ref) {
     }
   }, images.map(function (image, i) {
     return /*#__PURE__*/_react.default.createElement(Slide, {
+      key: "modal-".concat(i),
+      image: image
+    });
+  }))), /*#__PURE__*/_react.default.createElement("div", {
+    className: "slider-wrapper",
+    style: {
+      transform: "translateX(".concat(translateValue, "px)"),
+      transition: 'transform ease-out 0.45s'
+    }
+  }, images.map(function (image, i) {
+    return /*#__PURE__*/_react.default.createElement(Slide, {
+      onClickHandler: function onClickHandler() {
+        return setShowModal(true);
+      },
       key: i,
       image: image
     });

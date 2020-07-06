@@ -61,3 +61,26 @@
 #vids a:first-of-type {
   margin-bottom: 5px;
 }
+
+.w80\% {
+  width: 82% !important;
+}
+
+.mawa {
+  max-width: none !important;
+}
+
+.bgc-t {
+  background-color: transparent;
+}
+.t50 {
+  top: 50px;
+}
+
+.posa {
+  position: absolute;
+}
+
+.ofh {
+  overflow: hidden;
+}
