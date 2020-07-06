@@ -32,7 +32,8 @@ function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 var Slider = function Slider(_ref) {
-  var _images = _ref.images;
+  var _images = _ref.images,
+      minHeight = _ref.minHeight;
 
   var _useState = (0, _react.useState)(_images || []),
       _useState2 = _slicedToArray(_useState, 2),
@@ -84,16 +85,17 @@ var Slider = function Slider(_ref) {
 
   var Slide = function Slide(_ref2) {
     var image = _ref2.image,
-        onClickHandler = _ref2.onClickHandler;
+        onClickHandler = _ref2.onClickHandler,
+        applyMinHeight = _ref2.applyMinHeight;
     var styles = {
       backgroundImage: "url(".concat(image, ")"),
       backgroundSize: 'contain',
       backgroundRepeat: 'no-repeat',
       backgroundPosition: '50% 60%',
       height: 'auto',
-      // position: 'absolute',
       width: '100%'
     };
+    if (applyMinHeight && minHeight) styles['minHeight'] = minHeight;
     return /*#__PURE__*/_react.default.createElement("div", {
       className: "slide",
       style: {
@@ -106,7 +108,8 @@ var Slider = function Slider(_ref) {
     }, /*#__PURE__*/_react.default.createElement("img", {
       src: image,
       style: {
-        visibility: 'hidden'
+        visibility: 'hidden',
+        width: '100%'
       }
     }))); // return <div style={styles}><img onClick={onClickHandler ? onClickHandler : null} src={image} /></div>
     // return <></>
@@ -146,6 +149,7 @@ var Slider = function Slider(_ref) {
     }
   }, images.map(function (image, i) {
     return /*#__PURE__*/_react.default.createElement(Slide, {
+      applyMinHeight: true,
       key: "modal-".concat(i),
       image: image
     });

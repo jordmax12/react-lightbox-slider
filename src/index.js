@@ -3,7 +3,8 @@ import Modal from 'react-barebones-modal'
 import './src/index.css'
 
 const Slider = ({
-  images: _images
+  images: _images,
+  minHeight
 }) => {
   const [images, setImages] = useState(_images || []);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -39,19 +40,20 @@ const Slider = ({
     setTranslateValue(translateValue + -(slideWidth()))
   }
 
-  const Slide = ({ image, onClickHandler }) => {
+  const Slide = ({ image, onClickHandler, applyMinHeight }) => {
     const styles = {
       backgroundImage: `url(${image})`,
       backgroundSize: 'contain',
       backgroundRepeat: 'no-repeat',
       backgroundPosition: '50% 60%',
       height: 'auto',
-      // position: 'absolute',
       width: '100%'
     }
+
+    if (applyMinHeight && minHeight) styles['minHeight'] = minHeight;
     return <div className="slide" style={{ width: '100%', position: 'relative' }}>
       <div onClick={onClickHandler ? onClickHandler : null} style={styles}>
-        <img src={image} style={{ visibility: 'hidden' }} />
+        <img src={image} style={{ visibility: 'hidden', width: '100%' }} />
       </div>
     </div>
     // return <div style={styles}><img onClick={onClickHandler ? onClickHandler : null} src={image} /></div>
@@ -88,7 +90,7 @@ const Slider = ({
           }}>
           {
             images.map((image, i) => (
-              <Slide key={`modal-${i}`} image={image} />
+              <Slide applyMinHeight key={`modal-${i}`} image={image} />
             ))
           }
         </div>
