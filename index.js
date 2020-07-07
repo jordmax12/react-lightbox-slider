@@ -32,93 +32,182 @@ function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 var Slider = function Slider(_ref) {
-  var _images = _ref.images,
-      minHeight = _ref.minHeight;
+  var ref = _ref.ref,
+      _images = _ref.images,
+      _modalImages = _ref.modalImages,
+      minHeight = _ref.minHeight,
+      sliderMaxWidth = _ref.sliderMaxWidth;
 
   var _useState = (0, _react.useState)(_images || []),
       _useState2 = _slicedToArray(_useState, 2),
       images = _useState2[0],
       setImages = _useState2[1];
 
-  var _useState3 = (0, _react.useState)(0),
+  var _useState3 = (0, _react.useState)(_images || []),
       _useState4 = _slicedToArray(_useState3, 2),
-      currentIndex = _useState4[0],
-      setCurrentIndex = _useState4[1];
+      modalImages = _useState4[0],
+      setModalImages = _useState4[1];
 
   var _useState5 = (0, _react.useState)(0),
       _useState6 = _slicedToArray(_useState5, 2),
-      translateValue = _useState6[0],
-      setTranslateValue = _useState6[1];
+      currentIndex = _useState6[0],
+      setCurrentIndex = _useState6[1];
 
-  var _useState7 = (0, _react.useState)(false),
+  var _useState7 = (0, _react.useState)(0),
       _useState8 = _slicedToArray(_useState7, 2),
-      showModal = _useState8[0],
-      setShowModal = _useState8[1];
+      translateValue = _useState8[0],
+      setTranslateValue = _useState8[1];
+
+  var _useState9 = (0, _react.useState)(0),
+      _useState10 = _slicedToArray(_useState9, 2),
+      currentIndexModal = _useState10[0],
+      setCurrentIndexModal = _useState10[1];
+
+  var _useState11 = (0, _react.useState)(0),
+      _useState12 = _slicedToArray(_useState11, 2),
+      translateValueModal = _useState12[0],
+      setTranslateValueModal = _useState12[1];
+
+  var _useState13 = (0, _react.useState)(false),
+      _useState14 = _slicedToArray(_useState13, 2),
+      showModal = _useState14[0],
+      setShowModal = _useState14[1];
+
+  var _useState15 = (0, _react.useState)(false),
+      _useState16 = _slicedToArray(_useState15, 2),
+      sliderWidth = _useState16[0],
+      setSliderWidth = _useState16[1];
 
   if (showModal) document.body.style.overflow = "hidden";else document.body.style.overflow = "auto";
+  (0, _react.useEffect)(function () {
+    /**
+     * Alert if clicked on outside of element
+     */
+    function handleClickOutside(e) {
+      if (showModal && !e.target.closest("#modal-slider")) {
+        alert("You clicked outside of me!");
+      }
+    } // Bind the event listener
 
-  var slideWidth = function slideWidth() {
-    return document.querySelector('.slide').clientWidth;
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return function () {
+      // Unbind the event listener on clean up
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  var slideWidth = function slideWidth(isModal) {
+    return document.querySelector(isModal ? '.modal-slide' : '.slide').clientWidth;
   };
 
-  var goToPrevSlide = function goToPrevSlide() {
-    if (currentIndex === 0) {
-      setCurrentIndex(images.length - 1);
-      setTranslateValue(-(slideWidth() * (images.length - 1)));
+  var _goToPrevSlide = function goToPrevSlide(reactClass, isModal) {
+    var _currentIndex = isModal ? currentIndexModal : currentIndex;
+
+    var _images = isModal ? modalImages : images;
+
+    if (_currentIndex === 0) {
+      if (isModal) {
+        setCurrentIndexModal(_images.length - 1);
+        setTranslateValueModal(-(slideWidth() * (_images.length - 1)));
+      } else {
+        setCurrentIndex(_images.length - 1);
+        setTranslateValue(-(slideWidth() * (_images.length - 1)));
+      }
+
       return;
     }
 
-    setCurrentIndex(currentIndex - 1);
-    setTranslateValue(translateValue - 1 + slideWidth());
+    if (isModal) {
+      setCurrentIndexModal(currentIndexModal - 1);
+      setTranslateValueModal(translateValueModal - 1 + slideWidth(true));
+      setSliderWidth(slideWidth());
+    } else {
+      setCurrentIndex(currentIndex - 1);
+      setTranslateValue(translateValue - 1 + slideWidth());
+    }
   };
 
-  var goToNextSlide = function goToNextSlide() {
-    if (currentIndex === images.length - 1) {
-      setCurrentIndex(0);
-      setTranslateValue(0);
+  var _goToNextSlide = function goToNextSlide(reactClass, isModal) {
+    var _currentIndex = isModal ? currentIndexModal : currentIndex;
+
+    var _images = isModal ? modalImages : images;
+
+    if (_currentIndex === _images.length - 1) {
+      if (isModal) {
+        setCurrentIndexModal(0);
+        setTranslateValueModal(0);
+      } else {
+        setCurrentIndex(0);
+        setTranslateValue(0);
+      }
+
       return;
     }
 
-    setCurrentIndex(currentIndex + 1);
-    setTranslateValue(translateValue + -slideWidth());
+    if (isModal) {
+      setCurrentIndexModal(currentIndexModal + 1);
+      setTranslateValueModal(translateValueModal + -slideWidth(true));
+      setSliderWidth(slideWidth());
+    } else {
+      setCurrentIndex(currentIndex + 1);
+      setTranslateValue(translateValue + -slideWidth());
+    }
   };
 
   var Slide = function Slide(_ref2) {
     var image = _ref2.image,
         onClickHandler = _ref2.onClickHandler,
-        applyMinHeight = _ref2.applyMinHeight;
+        applyMinHeight = _ref2.applyMinHeight,
+        isModal = _ref2.isModal;
     var styles = {
-      backgroundImage: "url(".concat(image, ")"),
-      backgroundSize: 'contain',
-      backgroundRepeat: 'no-repeat',
-      backgroundPosition: '50% 60%',
-      height: 'auto',
-      width: '100%'
+      // backgroundImage: `url(${image})`,
+      // backgroundSize: 'contain',
+      // backgroundRepeat: 'no-repeat',
+      // backgroundPosition: '50% 60%',
+      // height: 'auto',
+      // width: '100%'
+      display: 'block',
+      marginLeft: 'auto',
+      marginRight: 'auto',
+      position: 'relative',
+      top: '50%',
+      transform: 'translateY(-50%)'
     };
-    if (applyMinHeight && minHeight) styles['minHeight'] = minHeight;
+
+    if (isModal) {
+      styles['maxWidth'] = '800px';
+    } else if (!isModal && sliderMaxWidth) {
+      styles['maxWidth'] = sliderMaxWidth;
+    }
+
+    if (applyMinHeight && minHeight) styles['minHeight'] = 'minHeight';
     return /*#__PURE__*/_react.default.createElement("div", {
-      className: "slide",
+      className: isModal ? 'modal-slide' : 'slide',
       style: {
         width: '100%',
         position: 'relative'
       }
-    }, /*#__PURE__*/_react.default.createElement("div", {
-      onClick: onClickHandler ? onClickHandler : null,
-      style: styles
     }, /*#__PURE__*/_react.default.createElement("img", {
+      className: isModal ? 'modal-slider-image' : 'slider-image',
+      onClick: onClickHandler ? onClickHandler : null,
       src: image,
-      style: {
-        visibility: 'hidden',
-        width: '100%'
-      }
-    }))); // return <div style={styles}><img onClick={onClickHandler ? onClickHandler : null} src={image} /></div>
+      style: styles
+    })); // return <div className="slide" style={{ width: '100%', position: 'relative' }}>
+    //   <div onClick={onClickHandler ? onClickHandler : null} style={styles}>
+    //     <img src={image} style={{ visibility: 'hidden', width: '100%' }} />
+    //   </div>
+    // </div>
+    // return <div style={styles}><img onClick={onClickHandler ? onClickHandler : null} src={image} /></div>
     // return <></>
     // return <div className="slide" onClick={onClickHandler ? onClickHandler : null} style={styles} />
   };
 
   var LeftArrow = function LeftArrow(props) {
+    var classNames = "backArrow arrow";
+    if (!props.isModal) classNames += " zi998";else classNames += " zi999";
     return /*#__PURE__*/_react.default.createElement("div", {
-      className: "backArrow arrow",
+      className: classNames,
       onClick: props.goToPrevSlide
     }, /*#__PURE__*/_react.default.createElement("i", {
       className: "fa fa-arrow-left fa-2x",
@@ -127,8 +216,10 @@ var Slider = function Slider(_ref) {
   };
 
   var RightArrow = function RightArrow(props) {
+    var classNames = "nextArrow arrow";
+    if (!props.isModal) classNames += " zi998";else classNames += " zi999";
     return /*#__PURE__*/_react.default.createElement("div", {
-      className: "nextArrow arrow",
+      className: classNames,
       onClick: props.goToNextSlide
     }, /*#__PURE__*/_react.default.createElement("i", {
       className: "fa fa-arrow-right fa-2x",
@@ -136,24 +227,68 @@ var Slider = function Slider(_ref) {
     }));
   };
 
-  return /*#__PURE__*/_react.default.createElement("div", {
-    className: "slider"
-  }, /*#__PURE__*/_react.default.createElement(_reactBarebonesModal.default, {
+  var modalClickHandler = function modalClickHandler(e) {
+    var allowList = ['arrow', 'fa-arrow-right', 'fa-arrow-left', 'modal-slider-image'];
+    console.log('here??');
+    var foundClassNames = [];
+    allowList.forEach(function (a) {
+      console.log(e.target.className);
+      console.log('logging a', a);
+      var classNames = e.target.className.split(' ');
+      console.log('logging classNames', classNames);
+      var find = classNames.filter(function (c) {
+        return c.indexOf(a) > -1;
+      });
+      console.log('logging find', find);
+      if (find.length > 0) foundClassNames.push(a);
+    });
+    console.log('logging foundClassNames', foundClassNames);
+    if (foundClassNames.length === 0) setShowModal(false);
+  };
+
+  return /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement(_reactBarebonesModal.default, {
     customClassName: "w80% mawa bgc-t t50 posa ofh",
-    show: showModal
+    show: showModal,
+    childClickHandler: modalClickHandler,
+    handleClose: function handleClose() {
+      return setShowModal(false);
+    }
+  }, /*#__PURE__*/_react.default.createElement("div", {
+    id: "modal-slider",
+    className: "modal-slider",
+    style: {
+      width: "".concat(sliderWidth, "px"),
+      display: showModal ? 'block' : 'none'
+    }
   }, /*#__PURE__*/_react.default.createElement("div", {
     className: "slider-wrapper",
     style: {
-      transform: "translateX(".concat(translateValue, "px)"),
+      transform: "translateX(".concat(translateValueModal, "px)"),
       transition: 'transform ease-out 0.45s'
     }
-  }, images.map(function (image, i) {
+  }, modalImages.map(function (image, i) {
     return /*#__PURE__*/_react.default.createElement(Slide, {
       applyMinHeight: true,
       key: "modal-".concat(i),
-      image: image
+      image: image,
+      isModal: true
     });
+  })), /*#__PURE__*/_react.default.createElement(LeftArrow, {
+    goToPrevSlide: function goToPrevSlide() {
+      return _goToPrevSlide(null, true);
+    },
+    isModal: true
+  }), /*#__PURE__*/_react.default.createElement(RightArrow, {
+    goToNextSlide: function goToNextSlide() {
+      return _goToNextSlide(null, true);
+    },
+    isModal: true
   }))), /*#__PURE__*/_react.default.createElement("div", {
+    className: "slider",
+    style: {
+      width: showModal ? "".concat(sliderWidth, "px") : '800px'
+    }
+  }, /*#__PURE__*/_react.default.createElement("div", {
     className: "slider-wrapper",
     style: {
       transform: "translateX(".concat(translateValue, "px)"),
@@ -168,10 +303,10 @@ var Slider = function Slider(_ref) {
       image: image
     });
   })), /*#__PURE__*/_react.default.createElement(LeftArrow, {
-    goToPrevSlide: goToPrevSlide
+    goToPrevSlide: _goToPrevSlide
   }), /*#__PURE__*/_react.default.createElement(RightArrow, {
-    goToNextSlide: goToNextSlide
-  }));
+    goToNextSlide: _goToNextSlide
+  })));
 };
 
 var _default = Slider;

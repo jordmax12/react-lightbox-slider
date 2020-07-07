@@ -1,4 +1,5 @@
-.slider {
+.slider,
+.modal-slider {
   position: relative;
   width: 800px;
   margin: 0 auto;
@@ -13,7 +14,8 @@
   width: 100%;
 }
 
-.slide {
+.slide,
+.modal-slide {
   display: inline-block;
   height: 100%;
   width: 100%;
@@ -35,7 +37,6 @@
   position: absolute;
   top: 50%;
   right: 25px;
-  z-index: 999;
   color: #fff;
 }
 
@@ -43,7 +44,6 @@
   position: absolute;
   top: 50%;
   left: 25px;
-  z-index: 999;
   color: #fff;
 }
 
@@ -83,4 +83,12 @@
 
 .ofh {
   overflow: hidden;
+}
+
+.zi999 {
+  z-index: 999;
+}
+
+.zi998 {
+  z-index: 998;
 }

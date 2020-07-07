@@ -1,11 +1,11 @@
 {
   "name": "react-lightbox-slider",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "scripts": {
     "build": "./node_modules/.bin/babel src --out-file index.js"
   },
   "dependencies": {
-    "react-barebones-modal": "^1.0.10"
+    "react-barebones-modal": "^1.0.11"
   },
   "devDependencies": {
     "@babel/cli": "^7.0.0",
