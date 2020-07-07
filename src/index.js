@@ -89,7 +89,7 @@ const Slider = ({
     }
   }
 
-  const Slide = ({ image, onClickHandler, applyMinHeight, isModal }) => {
+  const Slide = ({ image, index, applyMinHeight, isModal }) => {
     let styles = {
       // backgroundImage: `url(${image})`,
       // backgroundSize: 'contain',
@@ -113,7 +113,7 @@ const Slider = ({
 
     if (applyMinHeight && minHeight) styles['minHeight'] = 'minHeight';
     return <div className={isModal ? 'modal-slide' : 'slide'} style={{ width: '100%', position: 'relative' }}>
-      <img className={isModal ? 'modal-slider-image' : 'slider-image'} onClick={onClickHandler ? onClickHandler : null} src={image} style={styles} />
+      <img className={isModal ? 'modal-slider-image' : 'slider-image'} onClick={index ? () => handleImageClick(index) : null} src={image} style={styles} />
     </div>
     // return <div className="slide" style={{ width: '100%', position: 'relative' }}>
     //   <div onClick={onClickHandler ? onClickHandler : null} style={styles}>
@@ -157,20 +157,24 @@ const Slider = ({
       'modal-slider-image'
     ]
 
-    console.log('here??')
     const foundClassNames = [];
 
     allowList.forEach(a => {
-      console.log(e.target.className);
-      console.log('logging a', a);
       const classNames = e.target.className.split(' ');
-      console.log('logging classNames', classNames);
       const find = classNames.filter(c => c.indexOf(a) > -1);
-      console.log('logging find', find);
       if (find.length > 0) foundClassNames.push(a);
     })
-    console.log('logging foundClassNames', foundClassNames);
     if (foundClassNames.length === 0) setShowModal(false);
+  }
+
+  const handleImageClick = (index = 0) => {
+    console.log('here???')
+    setCurrentIndexModal(index);
+    const newTranslateValue = (translateValueModal + (index + 1));
+    setShowModal(true);
+    setTranslateValueModal((translateValueModal + (index + 1)) + -(slideWidth(true)));
+    console.log('logging index', index, 'logging newTranslateValue', newTranslateValue)
+
   }
 
   return (
@@ -226,7 +230,7 @@ const Slider = ({
           }}>
           {
             images.map((image, i) => (
-              <Slide onClickHandler={() => setShowModal(true)} key={i} image={image} />
+              <Slide index={i} key={i} image={image} />
             ))
           }
         </div>

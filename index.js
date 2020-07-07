@@ -157,7 +157,7 @@ var Slider = function Slider(_ref) {
 
   var Slide = function Slide(_ref2) {
     var image = _ref2.image,
-        onClickHandler = _ref2.onClickHandler,
+        index = _ref2.index,
         applyMinHeight = _ref2.applyMinHeight,
         isModal = _ref2.isModal;
     var styles = {
@@ -190,7 +190,9 @@ var Slider = function Slider(_ref) {
       }
     }, /*#__PURE__*/_react.default.createElement("img", {
       className: isModal ? 'modal-slider-image' : 'slider-image',
-      onClick: onClickHandler ? onClickHandler : null,
+      onClick: index ? function () {
+        return handleImageClick(index);
+      } : null,
       src: image,
       style: styles
     })); // return <div className="slide" style={{ width: '100%', position: 'relative' }}>
@@ -229,21 +231,25 @@ var Slider = function Slider(_ref) {
 
   var modalClickHandler = function modalClickHandler(e) {
     var allowList = ['arrow', 'fa-arrow-right', 'fa-arrow-left', 'modal-slider-image'];
-    console.log('here??');
     var foundClassNames = [];
     allowList.forEach(function (a) {
-      console.log(e.target.className);
-      console.log('logging a', a);
       var classNames = e.target.className.split(' ');
-      console.log('logging classNames', classNames);
       var find = classNames.filter(function (c) {
         return c.indexOf(a) > -1;
       });
-      console.log('logging find', find);
       if (find.length > 0) foundClassNames.push(a);
     });
-    console.log('logging foundClassNames', foundClassNames);
     if (foundClassNames.length === 0) setShowModal(false);
+  };
+
+  var handleImageClick = function handleImageClick() {
+    var index = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
+    console.log('here???');
+    setCurrentIndexModal(index);
+    var newTranslateValue = translateValueModal + (index + 1);
+    setShowModal(true);
+    setTranslateValueModal(translateValueModal + (index + 1) + -slideWidth(true));
+    console.log('logging index', index, 'logging newTranslateValue', newTranslateValue);
   };
 
   return /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement(_reactBarebonesModal.default, {
@@ -296,9 +302,7 @@ var Slider = function Slider(_ref) {
     }
   }, images.map(function (image, i) {
     return /*#__PURE__*/_react.default.createElement(Slide, {
-      onClickHandler: function onClickHandler() {
-        return setShowModal(true);
-      },
+      index: i,
       key: i,
       image: image
     });
