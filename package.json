@@ -1,6 +1,6 @@
 {
   "name": "react-lightbox-slider",
-  "version": "1.0.15",
+  "version": "1.0.16",
   "scripts": {
     "build": "./node_modules/.bin/babel src --out-file index.js"
   },
