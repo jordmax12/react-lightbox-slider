@@ -11,6 +11,10 @@ var _react = _interopRequireWildcard(require("react"));
 
 var _reactBarebonesModal = _interopRequireDefault(require("react-barebones-modal"));
 
+var _reactUuid = _interopRequireDefault(require("react-uuid"));
+
+var _propTypes = _interopRequireDefault(require("prop-types"));
+
 require("./src/index.css");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -32,10 +36,7 @@ function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 var Slider = function Slider(_ref) {
-  var ref = _ref.ref,
-      _images = _ref.images,
-      _modalImages = _ref.modalImages,
-      minHeight = _ref.minHeight,
+  var _images = _ref.images,
       sliderMaxWidth = _ref.sliderMaxWidth;
 
   var _useState = (0, _react.useState)(_images || []),
@@ -80,19 +81,14 @@ var Slider = function Slider(_ref) {
 
   if (showModal) document.body.style.overflow = "hidden";else document.body.style.overflow = "auto";
   (0, _react.useEffect)(function () {
-    /**
-     * Alert if clicked on outside of element
-     */
     function handleClickOutside(e) {
       if (showModal && !e.target.closest("#modal-slider")) {
         alert("You clicked outside of me!");
       }
-    } // Bind the event listener
-
+    }
 
     document.addEventListener("mousedown", handleClickOutside);
     return function () {
-      // Unbind the event listener on clean up
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
@@ -161,12 +157,6 @@ var Slider = function Slider(_ref) {
         applyMinHeight = _ref2.applyMinHeight,
         isModal = _ref2.isModal;
     var styles = {
-      // backgroundImage: `url(${image})`,
-      // backgroundSize: 'contain',
-      // backgroundRepeat: 'no-repeat',
-      // backgroundPosition: '50% 60%',
-      // height: 'auto',
-      // width: '100%'
       display: 'block',
       marginLeft: 'auto',
       marginRight: 'auto',
@@ -181,8 +171,9 @@ var Slider = function Slider(_ref) {
       styles['maxWidth'] = sliderMaxWidth;
     }
 
-    if (applyMinHeight && minHeight) styles['minHeight'] = 'minHeight';
+    if (applyMinHeight) styles['minHeight'] = '100%';
     return /*#__PURE__*/_react.default.createElement("div", {
+      key: "slide-".concat((0, _reactUuid.default)()),
       className: isModal ? 'modal-slide' : 'slide',
       style: {
         width: '100%',
@@ -190,19 +181,12 @@ var Slider = function Slider(_ref) {
       }
     }, /*#__PURE__*/_react.default.createElement("img", {
       className: isModal ? 'modal-slider-image' : 'slider-image',
-      onClick: index ? function () {
+      onClick: index > -1 ? function () {
         return handleImageClick(index);
       } : null,
       src: image,
       style: styles
-    })); // return <div className="slide" style={{ width: '100%', position: 'relative' }}>
-    //   <div onClick={onClickHandler ? onClickHandler : null} style={styles}>
-    //     <img src={image} style={{ visibility: 'hidden', width: '100%' }} />
-    //   </div>
-    // </div>
-    // return <div style={styles}><img onClick={onClickHandler ? onClickHandler : null} src={image} /></div>
-    // return <></>
-    // return <div className="slide" onClick={onClickHandler ? onClickHandler : null} style={styles} />
+    }));
   };
 
   var LeftArrow = function LeftArrow(props) {
@@ -244,12 +228,9 @@ var Slider = function Slider(_ref) {
 
   var handleImageClick = function handleImageClick() {
     var index = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
-    console.log('here???');
-    setCurrentIndexModal(index);
-    var newTranslateValue = translateValueModal + (index + 1);
     setShowModal(true);
-    setTranslateValueModal(translateValueModal + (index + 1) + -slideWidth(true));
-    console.log('logging index', index, 'logging newTranslateValue', newTranslateValue);
+    setCurrentIndexModal(index);
+    setTranslateValueModal(index * -800);
   };
 
   return /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement(_reactBarebonesModal.default, {
@@ -315,3 +296,7 @@ var Slider = function Slider(_ref) {
 
 var _default = Slider;
 exports.default = _default;
+Slider.propTypes = {
+  images: _propTypes.default.array.isRequired,
+  sliderMaxWidth: _propTypes.default.string
+};

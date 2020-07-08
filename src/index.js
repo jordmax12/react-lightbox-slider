@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import Modal from 'react-barebones-modal'
+import uuid from 'react-uuid';
+import PropTypes from 'prop-types'
 import './src/index.css'
 
 const Slider = ({
-  ref,
   images: _images,
-  modalImages: _modalImages,
-  minHeight,
   sliderMaxWidth
 }) => {
   const [images, setImages] = useState(_images || []);
@@ -22,25 +21,20 @@ const Slider = ({
   else document.body.style.overflow = "auto";
 
   useEffect(() => {
-    /**
-     * Alert if clicked on outside of element
-     */
     function handleClickOutside(e) {
       if (showModal && !e.target.closest("#modal-slider")) {
         alert("You clicked outside of me!");
       }
     }
 
-    // Bind the event listener
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
-      // Unbind the event listener on clean up
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
 
   const slideWidth = (isModal) => {
-    return document.querySelector(isModal ? '.modal-slide' : '.slide').clientWidth
+    return document.querySelector(isModal ? '.modal-slide' : '.slide').clientWidth;
   }
 
   const goToPrevSlide = (reactClass, isModal) => {
@@ -91,12 +85,6 @@ const Slider = ({
 
   const Slide = ({ image, index, applyMinHeight, isModal }) => {
     let styles = {
-      // backgroundImage: `url(${image})`,
-      // backgroundSize: 'contain',
-      // backgroundRepeat: 'no-repeat',
-      // backgroundPosition: '50% 60%',
-      // height: 'auto',
-      // width: '100%'
       display: 'block',
       marginLeft: 'auto',
       marginRight: 'auto',
@@ -111,18 +99,10 @@ const Slider = ({
       styles['maxWidth'] = sliderMaxWidth;
     }
 
-    if (applyMinHeight && minHeight) styles['minHeight'] = 'minHeight';
-    return <div className={isModal ? 'modal-slide' : 'slide'} style={{ width: '100%', position: 'relative' }}>
-      <img className={isModal ? 'modal-slider-image' : 'slider-image'} onClick={index ? () => handleImageClick(index) : null} src={image} style={styles} />
+    if (applyMinHeight) styles['minHeight'] = '100%';
+    return <div key={`slide-${uuid()}`} className={isModal ? 'modal-slide' : 'slide'} style={{ width: '100%', position: 'relative' }}>
+      <img className={isModal ? 'modal-slider-image' : 'slider-image'} onClick={index > -1 ? () => handleImageClick(index) : null} src={image} style={styles} />
     </div>
-    // return <div className="slide" style={{ width: '100%', position: 'relative' }}>
-    //   <div onClick={onClickHandler ? onClickHandler : null} style={styles}>
-    //     <img src={image} style={{ visibility: 'hidden', width: '100%' }} />
-    //   </div>
-    // </div>
-    // return <div style={styles}><img onClick={onClickHandler ? onClickHandler : null} src={image} /></div>
-    // return <></>
-    // return <div className="slide" onClick={onClickHandler ? onClickHandler : null} style={styles} />
   }
 
 
@@ -168,13 +148,9 @@ const Slider = ({
   }
 
   const handleImageClick = (index = 0) => {
-    console.log('here???')
-    setCurrentIndexModal(index);
-    const newTranslateValue = (translateValueModal + (index + 1));
     setShowModal(true);
-    setTranslateValueModal((translateValueModal + (index + 1)) + -(slideWidth(true)));
-    console.log('logging index', index, 'logging newTranslateValue', newTranslateValue)
-
+    setCurrentIndexModal(index)
+    setTranslateValueModal(index * -(800));
   }
 
   return (
@@ -208,21 +184,6 @@ const Slider = ({
         </div>
       </Modal>
       <div className="slider" style={{ width: showModal ? `${sliderWidth}px` : '800px' }}>
-        {/* <Modal
-      customClassName={`w80% mawa bgc-t t50 posa ofh`}
-      show={showModal}>
-      <div className="slider-wrapper"
-        style={{
-          transform: `translateX(${translateValue}px)`,
-          transition: 'transform ease-out 0.45s'
-        }}>
-        {
-          images.map((image, i) => (
-            <Slide applyMinHeight key={`modal-${i}`} image={image} />
-          ))
-        }
-      </div>
-    </Modal> */}
         <div className="slider-wrapper"
           style={{
             transform: `translateX(${translateValue}px)`,
@@ -248,6 +209,10 @@ const Slider = ({
   );
 }
 
-
-
 export default Slider
+
+
+Slider.propTypes = {
+  images: PropTypes.array.isRequired,
+  sliderMaxWidth: PropTypes.string
+}
