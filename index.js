@@ -37,7 +37,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 var Slider = function Slider(_ref) {
   var _images = _ref.images,
-      sliderMaxWidth = _ref.sliderMaxWidth;
+      sliderMaxWidth = _ref.sliderMaxWidth,
+      lightboxOnly = _ref.lightboxOnly;
 
   var _useState = (0, _react.useState)(_images || []),
       _useState2 = _slicedToArray(_useState, 2),
@@ -273,7 +274,8 @@ var Slider = function Slider(_ref) {
   }))), /*#__PURE__*/_react.default.createElement("div", {
     className: "slider",
     style: {
-      width: showModal ? "".concat(sliderWidth, "px") : '800px'
+      width: showModal ? "".concat(sliderWidth, "px") : '800px',
+      display: lightboxOnly ? 'none' : 'block'
     }
   }, /*#__PURE__*/_react.default.createElement("div", {
     className: "slider-wrapper",
