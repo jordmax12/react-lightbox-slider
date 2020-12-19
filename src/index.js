@@ -6,7 +6,8 @@ import './src/index.css'
 
 const Slider = ({
   images: _images,
-  sliderMaxWidth
+  sliderMaxWidth,
+  lightboxOnly
 }) => {
   const [images, setImages] = useState(_images || []);
   const [modalImages, setModalImages] = useState(_images || []);
@@ -183,7 +184,7 @@ const Slider = ({
           />
         </div>
       </Modal>
-      <div className="slider" style={{ width: showModal ? `${sliderWidth}px` : '800px' }}>
+      <div className="slider" style={{ width: showModal ? `${sliderWidth}px` : '800px', display: lightboxOnly ? 'none' : 'block' }}>
         <div className="slider-wrapper"
           style={{
             transform: `translateX(${translateValue}px)`,
